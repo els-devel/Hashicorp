@@ -1,0 +1,83 @@
+{
+  "path": [
+    {
+      "secret/pg12/+/password": [
+        {
+          "capabilities": [
+            "read"
+          ],
+          "secret/restricted": [
+            {
+              "allowed_parameters": [
+                {
+                  "none": [],
+                  "empty": []
+                }
+              ],
+              "capabilities": [
+                "create"
+              ]
+            }
+          ]
+        }
+      ],
+      "listener": [
+        {
+          "tcp": {
+            "address": "10.16.X.X:8200",
+            "tls_disable": "false",
+            "tls_min_version": "tls12",
+            "tls_cert_file": "?",
+            "tls_key_file": "?",
+            "http_read_timeout": "180s",
+            "http_write_timeout": "180s",
+            "http_idle_timeout": "5m",
+            "max_request_duration": "180s",
+            "max_request_size": 33554432
+          }
+        }
+      ],
+      "api_addr": "http://10.16.X.X:8200",
+      "storage": [
+        {
+          "postgresql": [
+            {
+              "connection_url": "postgres://csVault:1$Password!@localhost:5432/vault",
+              "table": "vault_kv_store",
+              "max_parallel": 100,
+              "max_idle_connections": 10
+            }
+          ]
+        }
+      ],
+      "max_lease_ttl": "10h",
+      "default_lease_ttl": "10h",
+      "default_max_request_duration": "180s",
+      "ui": true,
+      "log_level": "Info",
+      "log_format": "json",
+      "seal": [
+        {
+          "transit": {
+            "address": "https://vault:8200",
+            "token": "s.Qf1s5zigZ4OX6akYjQXJC1jY",
+            "disable_renewal": "false",
+            "key_name": "transit_key_name",
+            "mount_path": "transit/",
+            "namespace": "ns1/",
+            "tls_ca_cert": "/etc/vault/ca_cert.pem",
+            "tls_client_cert": "/etc/vault/client_cert.pem",
+            "tls_client_key": "/etc/vault/ca_cert.pem",
+            "tls_server_name": "vault",
+            "tls_skip_verify": "false"
+          }
+        }
+      ]
+    }
+
+
+
+    #
+    goes
+    in
+    /etc/vault/vault.conf

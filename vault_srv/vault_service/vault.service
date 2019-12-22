@@ -1,0 +1,34 @@
+#put this in /usr/lib/systemd/system/vault.service
+
+[Unit]
+Description=Vault service
+After=syslog.target
+After=network.target
+
+[Service]
+Type=idle
+
+User=root
+Group=root
+
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=read-only
+SecureBits=keep-caps
+Capabilities=CAP_IPC_LOCK+ep
+CapabilityBoundingSet=CAP_SYSLOG CAP_IPC_LOCK
+NoNewPrivileges=yes
+
+WorkingDirectory=/vault/bin/
+ExecStart=/vault/bin/vault server -config=/etc/vault/vault.conf
+
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGINT
+TimeoutStopSec=30s
+Restart=on-failure
+StartLimitInterval=60s
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
